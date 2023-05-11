@@ -1,21 +1,8 @@
-<!--
-<?php /*
-include('phpconnection.php');
 
-if(!$conn){
-    echo 'Connection Error : '.mysqli_connect_error();
-}
+<?php 
 
-$sql = "SELECT * FROM `product`";
-
-$result = mysqli_query($conn, $sql);
-
-$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
-
-print_r($products)
-*/
 ?>
--->
+
 <html lang="en">
 
     <?php include('templates/header.php'); ?>

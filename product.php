@@ -33,6 +33,22 @@ if (isset($_POST['submit'])) {
     }
 }
 
+include('phpconnection.php');
+
+if (!$conn) {
+    echo 'Connection Error : ' . mysqli_connect_error();
+}
+
+$sql = "SELECT * FROM `product`";
+
+$result = mysqli_query($conn, $sql);
+
+$products = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+mysqli_free_result($result);
+
+mysqli_close($conn);
+
 ?>
 
 <!DOCTYPE html>
@@ -88,9 +104,30 @@ if (isset($_POST['submit'])) {
                 </div>
             </form>
         </div>
-
     </div>
 </div>
+
+<div class="container-lg">
+    <div class="row justify-content-center">
+        <?php foreach ($products as $product) { ?>
+            <div class="col-md-3 col-lg-5">
+                <div class="card" style="width: 18rem;">
+                    <img src="..." class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <?php echo htmlspecialchars($product['product_name']); ?>
+                        </h5>
+                        <p class="card-text">
+                            <?php echo htmlspecialchars($product['product_description']); ?>
+                        </p>
+                        <a href="#" class="btn btn-primary">More Info</a>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+
 
 <?php include('templates/footer.php'); ?>
 
