@@ -1,23 +1,57 @@
-<html lang="en">
+<?php
+    include 'config/phpconnection.php';
 
-<?php include('templates\header.php'); ?>
+session_start();
 
-<div class="container-lg">
-    <form>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+if (isset($_POST['submit'])) {
 
-</div>
+  $email = mysqli_real_escape_string($conn, $_POST['email']);
+  $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-<?php include('templates\footer.php'); ?>
+  if (empty($email) || empty($password)) {
+    $error = 'Please enter both email and password';
+  } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    $error = 'Please enter a valid email address';
+  } else {
+    // Query database
+    $result = mysqli_query($conn, "SELECT * FROM user_account WHERE email = '$email'");
+    $user = mysqli_fetch_assoc($result);
+    $hashed_password = $user['acc_password'];
+
+    // Verify password
+    if (password_verify($password, $hashed_password)) {
+      // Password is correct, set session variable
+      $_SESSION['user_id'] = $user['id'];
+      // Redirect to appropriate page
+      header('Location: index.php');
+      exit();
+    } else {
+      // Password is incorrect, show error message
+      $error = 'Incorrect password, please try again';
+    }
+  }
+}
+
+?>
+
+<!DOCTYPE html>
+<html>
+<?php include 'templates/header.php'; ?>
+
+  <?php if (isset($error)): ?>
+    <div class="error"><?php echo $error; ?></div>
+  <?php endif; ?>
+  
+  <form method="post">
+    <label>Email:</label>
+    <input type="email" name="email" required>
+    <br>
+    <label>Password:</label>
+    <input type="password" name="password" required>
+    <br>
+    <input type="submit" name="submit" value="Login">
+  </form>
+
+  <?php include 'templates/footer.php'; ?>
 
 </html>
