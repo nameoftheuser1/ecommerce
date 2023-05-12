@@ -52,8 +52,9 @@ if (isset($_POST['submit'])) {
 
 
     if (array_filter($errors)) {
-        
-    }else{
+
+        echo 'Please fix the errors in the form';
+    } else {
         include('config/phpconnection.php');
 
         if (!$conn) {
@@ -111,7 +112,7 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp">
+            <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" value="<?php echo htmlspecialchars($email) ?>">
             <div class="text-danger"><?php echo $errors['email'] ?></div>
             <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
         </div>
@@ -126,15 +127,15 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="mb-3">
             <label for="address" class="form-label">Address</label>
-            <input type="text" class="form-control" id="address" name="address">
+            <input type="text" class="form-control" id="address" name="address" value="<?php echo htmlspecialchars($address) ?>">
             <div class="text-danger"><?php echo $errors['address'] ?></div>
         </div>
         <div class="mb-3">
             <label for="contact-number" class="form-label">Contact Number</label>
-            <input type="tel" class="form-control" id="contact-number" name="contact-number">
+            <input type="tel" class="form-control" id="contact-number" name="contact-number" value="<?php echo htmlspecialchars($contactNumber) ?>">
             <div class="text-danger"><?php echo $errors['contact-number'] ?></div>
         </div>
-        <button type="submit" class="btn btn-primary">Create Account</button>
+        <input type="submit" name="submit" value="Create Account" class="btn btn-primary">
     </form>
 </div>
 
