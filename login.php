@@ -1,9 +1,10 @@
 <?php
-    include 'config/phpconnection.php';
+include 'config/phpconnection.php';
 
-session_start();
+
 
 if (isset($_POST['submit'])) {
+  
 
   $email = mysqli_real_escape_string($conn, $_POST['email']);
   $password = mysqli_real_escape_string($conn, $_POST['password']);
@@ -20,8 +21,8 @@ if (isset($_POST['submit'])) {
 
     // Verify password
     if (password_verify($password, $hashed_password)) {
-      // Password is correct, set session variable
-      $_SESSION['user_id'] = $user['id'];
+      session_start();
+      $_SESSION['user_id'] = $user['user_id'];
       // Redirect to appropriate page
       header('Location: index.php');
       exit();
@@ -38,20 +39,36 @@ if (isset($_POST['submit'])) {
 <html>
 <?php include 'templates/header.php'; ?>
 
-  <?php if (isset($error)): ?>
-    <div class="error"><?php echo $error; ?></div>
-  <?php endif; ?>
-  
-  <form method="post">
-    <label>Email:</label>
-    <input type="email" name="email" required>
-    <br>
-    <label>Password:</label>
-    <input type="password" name="password" required>
-    <br>
-    <input type="submit" name="submit" value="Login">
-  </form>
+<?php if (isset($error)) : ?>
+  <div class="error"><?php echo $error; ?></div>
+<?php endif; ?>
 
-  <?php include 'templates/footer.php'; ?>
+<div class="container-lg">
+
+  <div class="row justify-content-center">
+    <div class="display-5 text-center my-5">Sign In</div>
+
+    <form method="POST" >
+      <div class="row justify-content-center input-group">
+        <div class= "col-md-2 w-75 mx-auto">
+          <span class="input-group-text">Email </span>
+          <input type="email" name="email" class="form-control" required>
+        </div>
+        <br>
+        <div class= "col-md-2 mb-2 w-75 mx-auto">
+          <span class="input-group-text">Password </span>
+          <input type="password" name="password" class="form-control" required>
+        </div>
+        <div class='col-md-2 text-center w-100'>
+          <input type="submit" name="submit" value="Login" class="btn btn-secondary">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<?php include 'templates/footer.php'; ?>
 
 </html>

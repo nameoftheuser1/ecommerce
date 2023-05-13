@@ -83,9 +83,9 @@ if (isset($_POST['submit'])) {
     }
 }
 
-$sql = "SELECT * FROM `product`";
-
 include('config/phpconnection.php');
+
+$sql = "SELECT * FROM `product`";
 
 if (!$conn) {
     echo 'Connection Error : ' . mysqli_connect_error();
